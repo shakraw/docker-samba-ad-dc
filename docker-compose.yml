@@ -34,11 +34,11 @@ services:
       - HOSTIP=192.168.1.241
       - TZ=Europe/Rome
     volumes:
-      - etc_samba:/etc/samba
+      - etc_samba_external:/etc/samba/external
       - var_lib_samba:/var/lib/samba
       - samba_shares:/srv/samba-shares
 
 volumes:
-  etc_samba:
+  etc_samba_external:
   var_lib_samba:
   samba_shares:
