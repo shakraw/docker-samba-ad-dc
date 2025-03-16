@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  samba-ad-dc:
+    #image: burnbabyburn/docker-ubuntu-samba-dc
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    container_name: samba-ad-dc
+    restart: unless-stopped
+    network_mode: "host"
+    privileged: true
+    dns:
+      # HOST IP address
+      - 192.168.1.241
+    dns_search:
+      - ad.samdom.local
+    environment:
+      - DEBUG_ENABLE=true
+      - DEBUG_LEVEL=0
+      - DOMAIN=AD.SAMDOM.LOCAL
+      - DOMAIN_NETBIOS=AD
+      - DOMAIN_PASS=SuperSecurePassword!
+      - DOMAIN_PWD_COMPLEXITY=true
+      - DOMAIN_PWD_ADMIN_NO_EXP=true
+      - DOMAIN_USER=Administrator
+      - BIND_INTERFACES_ENABLE=true
+      - BIND_INTERFACES=eno1:0 lo
+      - ENABLE_DNSFORWARDER=8.8.8.8
+      - ENABLE_RFC2307=true
+      - JOIN_SITE=ad.samdom.local
+      - HOSTNAME=MYHOSTNAME
+      # HOST IP address 
+      - HOSTIP=192.168.1.241
+      - TZ=Europe/Rome
+    volumes:
+      - etc_samba:/etc/samba
+      - var_lib_samba:/var/lib/samba
+      - samba_shares:/srv/samba-shares
+
+volumes:
+  etc_samba:
+  var_lib_samba:
+  samba_shares:
